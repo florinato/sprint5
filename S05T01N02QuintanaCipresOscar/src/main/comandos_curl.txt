@@ -1,0 +1,19 @@
+### Comandos CURL para API CRUD
+
+# Crear una nueva flor (POST /api/add)
+curl -X POST http://localhost:9001/flor/api/add -H "Content-Type: application/json" -d "{\"nomFlor\":\"Rosa\",\"paisFlor\":\"España\",\"tipusFlor\":\"UE\"}"
+
+# Actualizar una flor existente (PUT /api/update/{id})
+curl -X PUT http://localhost:9001/flor/api/update/1 -H "Content-Type: application/json" -d "{\"nomFlor\":\"Rosa Actualizada\",\"paisFlor\":\"Francia\",\"tipusFlor\":\"UE\"}"
+
+# Eliminar una flor existente (DELETE /api/delete/{id})
+curl -X DELETE http://localhost:9001/flor/api/delete/1
+
+# Obtener una flor por su ID (GET /api/getOne/{id})
+curl -X GET http://localhost:9001/flor/api/getOne/1
+
+# Obtener todas las flores (GET /api/getAll)
+curl -X GET http://localhost:9001/flor/api/getAll
+
+### URL del Swagger
+http://localhost:9001/swagger-ui.html

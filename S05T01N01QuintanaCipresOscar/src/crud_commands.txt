@@ -1,0 +1,16 @@
+# usar cmd
+# Agregar sucursal
+curl -X POST "http://localhost:9000/sucursal/add?nomSucursal=Sucursal1&paisSucursal=Spain"
+
+# Obtener todas las sucursales
+curl -X GET http://localhost:9000/sucursal/getAll
+
+# Obtener una sucursal por ID
+curl -X GET http://localhost:9000/sucursal/getOne/1
+
+# Actualizar una sucursal
+curl -X POST "http://localhost:9000/sucursal/update?pk_SucursalID=1&nomSucursal=UpdatedSucursal&paisSucursal=UpdatedCountry"
+
+
+# Eliminar una sucursal por ID
+curl -X GET http://localhost:9000/sucursal/delete/1

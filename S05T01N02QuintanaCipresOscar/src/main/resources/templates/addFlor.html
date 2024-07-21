@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Añadir Flor</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Añadir Flor</h1>
+        <form th:action="@{/flor/add}" th:object="${flor}" method="post">
+            <div class="form-group">
+                <label for="nomFlor">Nombre</label>
+                <input type="text" class="form-control" id="nomFlor" th:field="*{nomFlor}" placeholder="Nombre de la flor">
+            </div>
+            <div class="form-group">
+                <label for="paisFlor">País</label>
+                <input type="text" class="form-control" id="paisFlor" th:field="*{paisFlor}" placeholder="País de la flor">
+            </div>
+            <div class="form-group">
+                <label for="tipusFlor">Tipo</label>
+                <input type="text" class="form-control" id="tipusFlor" th:field="*{tipusFlor}" placeholder="Tipo de la flor">
+            </div>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="/flor/getAll" class="btn btn-secondary">Cancelar</a>
+            
+        </form>
+    </div>
+</body>
+</html>
+

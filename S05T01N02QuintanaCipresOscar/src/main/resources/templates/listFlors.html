@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Flores</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Lista de Flores</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>País</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="flor : ${flors}">
+                    <td th:text="${flor.pk_FlorID}">1</td>
+                    <td th:text="${flor.nomFlor}">Rosa</td>
+                    <td th:text="${flor.paisFlor}">España</td>
+                    <td th:text="${flor.tipusFlor}">UE</td>
+                    <td>
+                        <a th:href="@{/flor/update/{id}(id=${flor.pk_FlorID})}" class="btn btn-warning btn-sm">Actualizar</a>
+                        <a th:href="@{/flor/delete/{id}(id=${flor.pk_FlorID})}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="mt-3">
+            <a href="/flor/add" class="btn btn-primary">Añadir Nueva Flor</a>
+            <a href="/" class="btn btn-secondary">Volver al Índice</a>
+        </div>
+    </div>
+</body>
+</html>

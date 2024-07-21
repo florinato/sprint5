@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List Sucursales</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">List of Sucursales</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>País</th>
+                    <th>Tipo</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="sucursal : ${sucursales}">
+                    <td th:text="${sucursal.pk_SucursalID}"></td>
+                    <td th:text="${sucursal.nomSucursal}"></td>
+                    <td th:text="${sucursal.paisSucursal}"></td>
+                    <td th:text="${sucursal.tipusSucursal}"></td>
+                    <td>
+                        <a th:href="@{/sucursal/update/{id}(id=${sucursal.pk_SucursalID})}" class="btn btn-warning btn-sm">Edit</a>
+                        <a th:href="@{/sucursal/delete/{id}(id=${sucursal.pk_SucursalID})}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-primary" onclick="window.location.href='/sucursal/add'">Add</button>
+        <button type="button" class="btn btn-secondary" onclick="window.location.href='/'">Back</button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
