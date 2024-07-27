@@ -10,8 +10,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+
 @Entity
 public class Jugador {
+
+    public Jugador() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +29,12 @@ public class Jugador {
     
     private List<Game> partidas;
 
-
-
-    public Jugador() {}
-
-    public Jugador(String username, LocalDateTime fechaRegistro, String password) {
-        this.username = username;
-        this.fechaRegistro = fechaRegistro;
+    public Jugador(String username,  String password) {
+        this.username = username != null && !username.isEmpty() ? username : "ANONIM";
+        this.fechaRegistro = LocalDateTime.now();
         this.password = password;
     }
 
-    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -65,9 +64,7 @@ public class Jugador {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(LocalDateTime fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
+
 
     public double getPorcentajeExito() {
         return porcentajeExito;
@@ -91,5 +88,7 @@ public class Jugador {
         long wonGames = partidas.stream().filter(Game::isGanada).count();
         return totalGames == 0 ? 0 : (double) wonGames / totalGames * 100;
     }
+
+
 }
 

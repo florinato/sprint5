@@ -1,6 +1,5 @@
 package cat.itacademy.barcelonactiva.quintana.cipres.oscar.s05.t02.n01.model.services;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -11,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import cat.itacademy.barcelonactiva.quintana.cipres.oscar.s05.t02.n01.model.domain.Game;
@@ -27,15 +27,16 @@ public class JugadorService implements UserDetailsService {
     @Autowired
     private GameRepository gameRepository;
     
-    private final  AtomicLong partidaCounter = new AtomicLong(); // Contador para las partidas
 
-    public Jugador createJugador(String nom) {
-        Jugador jugador = new Jugador();
-        jugador.setUsername(nom != null && !nom.isEmpty() ? nom : "ANONIM");
-        jugador.setFechaRegistro(LocalDateTime.now());
+    private PasswordEncoder passwordEncoder;
+
+    private final AtomicLong partidaCounter = new AtomicLong();
+
+    public Jugador createJugador(String nom, String password) {
+        String encodedPassword = passwordEncoder.encode(password);
+        Jugador jugador = new Jugador(nom != null && !nom.isEmpty() ? nom : "ANONIM", encodedPassword);
         return jugadorRepository.save(jugador);
     }
-
     public Jugador updateJugador(Jugador jugador) {
         return jugadorRepository.save(jugador);
     }
@@ -75,17 +76,13 @@ public class JugadorService implements UserDetailsService {
         if (jugadorOptional.isPresent()) {
             Jugador jugador = jugadorOptional.get();
             Long partidaId = partidaCounter.incrementAndGet(); // Nueva partida
-            Game game;
-            
-            do {
-                game = new Game(jugador, partidaId);
-                gameRepository.save(game);
-            } while (!game.isGanada());
-            
+            Game game = new Game(jugador, partidaId);
+            gameRepository.save(game);
+
             double porcentajeExito = jugador.calcularPorcentajeExito();
             jugador.setPorcentajeExito(porcentajeExito);
             jugadorRepository.save(jugador);
-            
+
             return game;
         }
         return null;
