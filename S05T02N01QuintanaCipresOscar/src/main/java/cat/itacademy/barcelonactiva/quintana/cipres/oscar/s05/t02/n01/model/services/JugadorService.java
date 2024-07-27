@@ -34,7 +34,7 @@ public class JugadorService implements UserDetailsService {
 
     public Jugador createJugador(String nom, String password) {
         String encodedPassword = passwordEncoder.encode(password);
-        Jugador jugador = new Jugador(nom != null && !nom.isEmpty() ? nom : "ANONIM", encodedPassword);
+        Jugador jugador = new Jugador(nom , encodedPassword);
         return jugadorRepository.save(jugador);
     }
     public Jugador updateJugador(Jugador jugador) {
@@ -48,7 +48,7 @@ public class JugadorService implements UserDetailsService {
     public Jugador findById(Long id) {
         return jugadorRepository.findById(id).orElseThrow(() -> new RuntimeException("Jugador no encontrado"));
     }
-
+    
     public List<Jugador> getAllJugadoresOrdenados() {
         return jugadorRepository.findAll().stream()
             .map(jugador -> {
@@ -179,4 +179,6 @@ public class JugadorService implements UserDetailsService {
     public Jugador save(Jugador jugador) {
         return jugadorRepository.save(jugador);
     }
+
+    
 }

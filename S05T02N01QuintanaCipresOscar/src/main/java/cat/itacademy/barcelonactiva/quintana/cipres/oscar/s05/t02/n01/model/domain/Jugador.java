@@ -22,7 +22,7 @@ public class Jugador {
     private Long id;
     private String username;
     private String password;
-    private LocalDateTime fechaRegistro;
+    private LocalDateTime fechaRegistro=null;
     private double porcentajeExito;
 
     @OneToMany(mappedBy = "jugador", cascade = CascadeType.ALL, orphanRemoval = true)

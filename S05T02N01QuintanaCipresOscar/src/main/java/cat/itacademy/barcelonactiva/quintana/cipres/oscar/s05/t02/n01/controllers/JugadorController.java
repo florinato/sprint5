@@ -1,15 +1,19 @@
 package cat.itacademy.barcelonactiva.quintana.cipres.oscar.s05.t02.n01.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cat.itacademy.barcelonactiva.quintana.cipres.oscar.s05.t02.n01.model.domain.Jugador;
 import cat.itacademy.barcelonactiva.quintana.cipres.oscar.s05.t02.n01.model.services.JugadorService;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/api/players")
@@ -64,4 +68,16 @@ public class JugadorController {
                 .append("porcentajeExito: ").append(winner.getPorcentajeExito()).append("\n");
         return ResponseEntity.ok(response.toString());
     }
+
+@PutMapping("/{id}")
+public ResponseEntity<Jugador> updatePlayerName(@PathVariable Long id, @RequestBody Map<String, String> request) {
+    Jugador existingJugador = jugadorService.findById(id);
+    String nuevoNombre = request.get("username");
+    if (nuevoNombre != null && !nuevoNombre.trim().isEmpty()) {
+        existingJugador.setUsername(nuevoNombre);
+        jugadorService.updateJugador(existingJugador);
+    }
+    return ResponseEntity.ok(existingJugador);
+}
+
 }
