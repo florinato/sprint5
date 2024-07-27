@@ -1,7 +1,6 @@
 package cat.itacademy.barcelonactiva.quintana.cipres.oscar.s05.t02.n01.controllers;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -68,16 +67,24 @@ public class JugadorController {
                 .append("porcentajeExito: ").append(winner.getPorcentajeExito()).append("\n");
         return ResponseEntity.ok(response.toString());
     }
-
-@PutMapping("/{id}")
-public ResponseEntity<Jugador> updatePlayerName(@PathVariable Long id, @RequestBody Map<String, String> request) {
-    Jugador existingJugador = jugadorService.findById(id);
-    String nuevoNombre = request.get("username");
-    if (nuevoNombre != null && !nuevoNombre.trim().isEmpty()) {
-        existingJugador.setUsername(nuevoNombre);
-        jugadorService.updateJugador(existingJugador);
+    @PutMapping("/players/{id}")
+    public ResponseEntity<Jugador> updatePlayerName(@PathVariable Long id, @RequestBody Jugador updatedJugador) {
+        Jugador existingJugador = jugadorService.findById(id);  // Usar findById que ya maneja el Optional
+        
+        // Solo actualizar el nombre si se proporciona un nuevo nombre
+        if (updatedJugador.getUsername() != null && !updatedJugador.getUsername().isEmpty()) {
+            existingJugador.setUsername(updatedJugador.getUsername());
+        } else {
+            existingJugador.setUsername("ANONIM");
+        }
+        
+        Jugador updated = jugadorService.updateJugador(existingJugador);
+        return ResponseEntity.ok(updated);
     }
-    return ResponseEntity.ok(existingJugador);
+    
+    
 }
+    
 
-}
+
+

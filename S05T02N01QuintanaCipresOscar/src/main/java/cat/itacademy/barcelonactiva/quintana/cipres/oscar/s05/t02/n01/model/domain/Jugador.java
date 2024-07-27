@@ -14,6 +14,8 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Jugador {
 
+
+
     public Jugador() {
     }
 
@@ -22,7 +24,7 @@ public class Jugador {
     private Long id;
     private String username;
     private String password;
-    private LocalDateTime fechaRegistro=null;
+    private LocalDateTime fechaRegistro;
     private double porcentajeExito;
 
     @OneToMany(mappedBy = "jugador", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -30,7 +32,7 @@ public class Jugador {
     private List<Game> partidas;
 
     public Jugador(String username,  String password) {
-        this.username = username != null && !username.isEmpty() ? username : "ANONIM";
+        this.username = username;
         this.fechaRegistro = LocalDateTime.now();
         this.password = password;
     }
@@ -88,6 +90,10 @@ public class Jugador {
         long wonGames = partidas.stream().filter(Game::isGanada).count();
         return totalGames == 0 ? 0 : (double) wonGames / totalGames * 100;
     }
+
+
+
+    
 
 
 }

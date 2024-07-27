@@ -73,11 +73,9 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public Jugador registerUser(@RequestBody Jugador signUpRequest) {
-        signUpRequest.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-        return jugadorService.save(signUpRequest);
+    public void registerUser(@RequestBody Jugador signUpRequest) {
+        jugadorService.createJugador(signUpRequest.getUsername(), passwordEncoder.encode(signUpRequest.getPassword()));
     }
-
     private String generateToken(Authentication authentication) {
         org.springframework.security.core.userdetails.User userPrincipal = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
 
