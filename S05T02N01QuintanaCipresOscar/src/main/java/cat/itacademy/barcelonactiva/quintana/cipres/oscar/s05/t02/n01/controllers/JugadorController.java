@@ -1,18 +1,21 @@
 package cat.itacademy.barcelonactiva.quintana.cipres.oscar.s05.t02.n01.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cat.itacademy.barcelonactiva.quintana.cipres.oscar.s05.t02.n01.model.domain.Jugador;
 import cat.itacademy.barcelonactiva.quintana.cipres.oscar.s05.t02.n01.model.services.JugadorService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 
 @RestController
 @RequestMapping("/api/players")
@@ -67,24 +70,31 @@ public class JugadorController {
                 .append("porcentajeExito: ").append(winner.getPorcentajeExito()).append("\n");
         return ResponseEntity.ok(response.toString());
     }
-    @PutMapping("/players/{id}")
-    public ResponseEntity<Jugador> updatePlayerName(@PathVariable Long id, @RequestBody Jugador updatedJugador) {
-        Jugador existingJugador = jugadorService.findById(id);  // Usar findById que ya maneja el Optional
-        
-        // Solo actualizar el nombre si se proporciona un nuevo nombre
-        if (updatedJugador.getUsername() != null && !updatedJugador.getUsername().isEmpty()) {
-            existingJugador.setUsername(updatedJugador.getUsername());
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Jugador> updatePlayerName(@PathVariable Long id, @RequestBody Map<String, String> updates) {
+        System.out.println("Actualizando jugador con ID: " + id);
+
+        String newUsername = updates.get("username");
+        System.out.println("Nuevo nombre de usuario recibido: " + newUsername);
+
+        Jugador existingJugador = jugadorService.findById(id);
+
+        if (existingJugador == null) {
+            System.out.println("Jugador no encontrado: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        if (newUsername != null && !newUsername.isEmpty()) {
+            System.out.println("Estableciendo nuevo nombre de usuario: " + newUsername);
+            existingJugador.setUsername(newUsername);
         } else {
+            System.out.println("No se proporcionó nuevo nombre de usuario, estableciendo ANONIM");
             existingJugador.setUsername("ANONIM");
         }
-        
+
         Jugador updated = jugadorService.updateJugador(existingJugador);
+        System.out.println("Nombre de usuario actualizado en la base de datos: " + updated.getUsername());
         return ResponseEntity.ok(updated);
     }
-    
-    
 }
-    
-
-
-

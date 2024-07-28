@@ -42,25 +42,10 @@ public class JugadorService implements UserDetailsService {
     }
     
     public Jugador updateJugador(Jugador jugador) {
-        // Verificar nombres duplicados
-        if (jugador.getUsername() != null && !jugador.getUsername().isEmpty() && !"ANONIM".equalsIgnoreCase(jugador.getUsername())) {
-            Optional<Jugador> existingJugador = jugadorRepository.findByUsername(jugador.getUsername());
-            if (existingJugador.isPresent() && !existingJugador.get().getId().equals(jugador.getId())) {
-                throw new IllegalArgumentException("El nombre de usuario ya está en uso");
-            }
-        }
-    
-        // Asignar "ANONIM" si el nombre es nulo o está vacío
-        String finalNom = (jugador.getUsername() == null || jugador.getUsername().isEmpty()) ? "ANONIM" : jugador.getUsername();
-        jugador.setUsername(finalNom);
-    
+        System.out.println("Guardando jugador actualizado con ID: " + jugador.getId());
         return jugadorRepository.save(jugador);
     }
     
-    
-    
-    
-
     public Optional<Jugador> getJugadorById(Long id) {
         return jugadorRepository.findById(id);
     }
@@ -211,6 +196,5 @@ public class JugadorService implements UserDetailsService {
     public Jugador save(Jugador jugador) {
         return jugadorRepository.save(jugador);
     }
-    
     
 }

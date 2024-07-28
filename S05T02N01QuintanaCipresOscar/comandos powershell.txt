@@ -1,0 +1,51 @@
+# Crear usuario ANONIM
+Invoke-RestMethod -Uri "http://localhost:8081/auth/signup" -Method Post -ContentType "application/json" -Body '{"username":"", "password":"password123"}'
+
+# Crear usuario jugador2
+Invoke-RestMethod -Uri "http://localhost:8081/auth/signup" -Method Post -ContentType "application/json" -Body '{"username":"jugador2", "password":"password123"}'
+
+# Iniciar sesión con usuario ANONIM
+$anonimTokenResponse = Invoke-RestMethod -Uri "http://localhost:8081/auth/signin" -Method Post -ContentType "application/json" -Body '{"username":"ANONIM", "password":"password123"}'
+$anonimToken = $anonimTokenResponse.token
+$anonimToken
+
+# Iniciar sesión con usuario jugador2
+$jugador2TokenResponse = Invoke-RestMethod -Uri "http://localhost:8081/auth/signin" -Method Post -ContentType "application/json" -Body '{"username":"jugador2", "password":"password123"}'
+$jugador2Token = $jugador2TokenResponse.token
+$jugador2Token
+
+# Realizar una tirada de dados (ejemplo para el usuario jugador2)
+$id = "2"
+Invoke-RestMethod -Uri "http://localhost:8081/games/players/$id" -Method Post -Headers @{Authorization = "Bearer $jugador2Token"} -ContentType "application/json" -Body '{}'
+
+# Obtener todas las tiradas de un jugador (ejemplo para el usuario jugador2)
+$id = "2"
+Invoke-RestMethod -Uri "http://localhost:8081/games/players/$id" -Method Get -Headers @{Authorization = "Bearer $jugador2Token"} -ContentType "application/json"
+
+# Eliminar todas las tiradas de un jugador (ejemplo para el usuario jugador2)
+$id = "2"
+Invoke-RestMethod -Uri "http://localhost:8081/games/players/$id" -Method Delete -Headers @{Authorization = "Bearer $jugador2Token"} -ContentType "application/json"
+
+# Obtener el listado de todos los jugadores del sistema (GET /players)
+Invoke-RestMethod -Uri "http://localhost:8081/api/players" -Method Get -Headers @{Authorization = "Bearer $jugador2Token"} -ContentType "application/json"
+
+
+# Obtener el ranking medio de todos los jugadores (GET /players/ranking)
+Invoke-RestMethod -Uri "http://localhost:8081/api/players/ranking" -Method Get -Headers @{Authorization = "Bearer $jugador2Token"} -ContentType "application/json"
+
+# Obtener el jugador con peor ranking (GET /players/ranking/loser)
+Invoke-RestMethod -Uri "http://localhost:8081/api/players/ranking/loser" -Method Get -Headers @{Authorization = "Bearer $jugador2Token"} -ContentType "application/json"
+
+# Obtener el jugador con mejor ranking (GET /players/ranking/winner)
+Invoke-RestMethod -Uri "http://localhost:8081/api/players/ranking/winner" -Method Get -Headers @{Authorization = "Bearer $jugador2Token"} -ContentType "application/json"
+
+# Modificar el nombre del jugador (PUT /players)
+$id = "1"
+Invoke-RestMethod -Uri "http://localhost:8081/api/players/$id" -Method Put -Headers @{Authorization = "Bearer $anonimToken"} -ContentType "application/json" -Body '{"username":"nuevoNombre"}'
+
+# Iniciar sesión con el nuevo nombre de usuario
+$newUsername = "nuevoNombre"
+$password = "password123"  # Asegúrate de usar la contraseña correcta para el usuario
+$loginResponse = Invoke-RestMethod -Uri "http://localhost:8081/auth/signin" -Method Post -ContentType "application/json" -Body '{"username":"' + $newUsername + '", "password":"' + $password + '"}'
+$newToken = $loginResponse.token
+$newToken

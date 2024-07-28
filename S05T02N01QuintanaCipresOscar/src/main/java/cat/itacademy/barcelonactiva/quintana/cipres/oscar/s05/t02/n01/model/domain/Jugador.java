@@ -3,6 +3,8 @@ package cat.itacademy.barcelonactiva.quintana.cipres.oscar.s05.t02.n01.model.dom
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 public class Jugador {
 
@@ -90,11 +92,6 @@ public class Jugador {
         long wonGames = partidas.stream().filter(Game::isGanada).count();
         return totalGames == 0 ? 0 : (double) wonGames / totalGames * 100;
     }
-
-
-
-    
-
 
 }
 
