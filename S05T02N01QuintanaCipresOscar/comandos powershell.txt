@@ -14,6 +14,10 @@ $jugador2TokenResponse = Invoke-RestMethod -Uri "http://localhost:8081/auth/sign
 $jugador2Token = $jugador2TokenResponse.token
 $jugador2Token
 
+# Realizar una tirada de dados (ejemplo para el usuario jugador1)
+$id = "1"
+Invoke-RestMethod -Uri "http://localhost:8081/games/players/$id" -Method Post -Headers @{Authorization = "Bearer $anonimToken"} -ContentType "application/json" -Body '{}'
+
 # Realizar una tirada de dados (ejemplo para el usuario jugador2)
 $id = "2"
 Invoke-RestMethod -Uri "http://localhost:8081/games/players/$id" -Method Post -Headers @{Authorization = "Bearer $jugador2Token"} -ContentType "application/json" -Body '{}'
@@ -43,9 +47,4 @@ Invoke-RestMethod -Uri "http://localhost:8081/api/players/ranking/winner" -Metho
 $id = "1"
 Invoke-RestMethod -Uri "http://localhost:8081/api/players/$id" -Method Put -Headers @{Authorization = "Bearer $anonimToken"} -ContentType "application/json" -Body '{"username":"nuevoNombre"}'
 
-# Iniciar sesión con el nuevo nombre de usuario
-$newUsername = "nuevoNombre"
-$password = "password123"  # Asegúrate de usar la contraseña correcta para el usuario
-$loginResponse = Invoke-RestMethod -Uri "http://localhost:8081/auth/signin" -Method Post -ContentType "application/json" -Body '{"username":"' + $newUsername + '", "password":"' + $password + '"}'
-$newToken = $loginResponse.token
-$newToken
+

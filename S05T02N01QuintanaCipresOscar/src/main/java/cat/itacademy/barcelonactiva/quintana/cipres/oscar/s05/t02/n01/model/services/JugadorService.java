@@ -85,12 +85,12 @@ public class JugadorService implements UserDetailsService {
             Optional<Game> lastGame = gameRepository.findFirstByOrderByIdDesc();
             Long partidaId;
     
-            if (lastGame.isPresent() && !lastGame.get().isGanada()) {
+            if (lastGame.isPresent() && Boolean.FALSE.equals(lastGame.get().isGanada())) {
                 // Si la última partida no fue ganada, mantener el mismo `partidaId`
                 partidaId = lastGame.get().getPartidaId();
             } else {
                 // Si no hay partida previa o la última fue ganada, incrementar el `partidaId`
-                partidaId = (lastGame.isPresent() ? lastGame.get().getPartidaId() : 0L) + 1;
+                partidaId = (lastGame.map(Game::getPartidaId).orElse(0L)) + 1;
             }
     
             Game game = new Game(jugador, partidaId);
